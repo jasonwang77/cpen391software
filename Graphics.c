@@ -126,9 +126,9 @@ void graph_showGasFrame(int gas) {
 	// print coordinate
 	// print label
 	// 100%
-	OutGraphicsCharFont2a(47, 80, RED, WHITE, 49, 0);
-	OutGraphicsCharFont2a(58, 80, RED, WHITE, 48, 0);
-	OutGraphicsCharFont2a(69, 80, RED, WHITE, 48, 0);
+	OutGraphicsCharFont2a(47, 80, GREEN, WHITE, 49, 0);
+	OutGraphicsCharFont2a(58, 80, GREEN, WHITE, 48, 0);
+	OutGraphicsCharFont2a(69, 80, GREEN, WHITE, 48, 0);
 	OutGraphicsCharFont2a(80, 80, YELLOW, WHITE, 37, 0);
 	// 0%
 	OutGraphicsCharFont2a(69, 430, GREEN, WHITE, 48, 0);
