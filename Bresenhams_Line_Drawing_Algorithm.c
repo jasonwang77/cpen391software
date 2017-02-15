@@ -37,7 +37,7 @@
 
 #define	BLACK			0
 #define	WHITE			1
-#define	RED			2
+#define	RED				2
 #define	LIME			3
 #define	BLUE			4
 #define	YELLOW			5
@@ -97,10 +97,13 @@ This function draw a horizontal line, 1 pixel at a time starting at the x,y coor
 
 void HLine(int x1, int y1, int length, int Colour)
 {
-	int i;
+	WAIT_FOR_GRAPHICS;				// is graphics ready for new command
 
-	for(i = x1; i < x1+length; i++ )
-		WriteAPixel(i, y1, Colour);
+	GraphicsX1Reg = x1;				// write coords to x1, y1
+	GraphicsY1Reg = y1;
+	GraphicsX2Reg = x1 + length;
+	GraphicsColourReg = Colour;			// set pixel colour
+	GraphicsCommandReg = DrawHLine;			// give graphics "write pixel" command
 }
 
 /********************************************************************************************* 

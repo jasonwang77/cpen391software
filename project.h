@@ -1,5 +1,5 @@
 //project.h
-
+/*
 #define SENSOR_Control (*(volatile unsigned char *)(0x84000210))
 #define SENSOR_Status (*(volatile unsigned char *)(0x84000210))
 #define SENSOR_TxData (*(volatile unsigned char *)(0x84000212))
@@ -12,10 +12,19 @@
 #define TOUCH_Baud (*(volatile unsigned char *)(0x84000234))
 #define TRUE 1
 #define FALSE 0
-
-
-
-
+*/
+#define SENSOR_Control (*(volatile unsigned char *)(0x84000210))
+#define SENSOR_Status (*(volatile unsigned char *)(0x84000210))
+#define SENSOR_TxData (*(volatile unsigned char *)(0x84000212))
+#define SENSOR_RxData (*(volatile unsigned char *)(0x84000212))
+#define SENSOR_Baud (*(volatile unsigned char *)(0x84000214))
+#define TOUCH_Control (*(volatile unsigned char *)(0x84000230))
+#define TOUCH_Status (*(volatile unsigned char *)(0x84000230))
+#define TOUCH_TxData (*(volatile unsigned char *)(0x84000232))
+#define TOUCH_RxData (*(volatile unsigned char *)(0x84000232))
+#define TOUCH_Baud (*(volatile unsigned char *)(0x84000234))
+#define TRUE 1
+#define FALSE 0
 
 
 // #defined constants representing values we write to the graphics 'command' register to get
@@ -59,10 +68,10 @@
 
 
 #define MENU	0
-#define CH4 	1
+#define CO 		1
 #define SMOKE 	2
-#define NGAS	3
-#define AIRQ	4
+#define CH4		3
+#define NOX		4
 int current_state;
 int last_height;
 

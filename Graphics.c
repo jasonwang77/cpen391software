@@ -10,14 +10,39 @@
 #define	YELLOW		5
 #define	CYAN		6
 #define	MAGENTA		7
-#define GREEN		100
 
 
 // clear everything
 void graph_clearAll(){
 	int i;
 	for (i=0;i<479;i++) {
-		Line(0,i,800,i,BLACK);
+		HLine(0,i,800,BLACK);
+	}
+}
+
+
+void drawButton(int x, int y,int margin_top,int margin_bottom,int margin_left,int margin_right, int color, int backgroundcolour, char *word){
+	int length = strlen(word);
+	int i;
+
+	//draw button
+	for(i = y - margin_top; i < y + margin_bottom + 14; i++){
+		HLine(x - margin_left, i, margin_right*2 + length * 11, backgroundcolour);
+	}
+
+	//write word
+	for(i = 0; i < length; i++){
+		OutGraphicsCharFont2a(x + i * 11, y, color, backgroundcolour, word[i], 0);
+	}
+}
+
+void writeWord(int x, int y,int color, int backgroundcolour, char *word){
+	int length = strlen(word);
+	int i;
+
+	//write word
+	for(i = 0; i < length; i++){
+		OutGraphicsCharFont2a(x + i * 11, y, color, backgroundcolour, word[i], 0);
 	}
 }
 
@@ -26,55 +51,27 @@ void graph_clearAll(){
 void graph_goto_menu() {
 	graph_clearAll();
 
+	drawButton(254,125, 20, 20, 20, 20, BLACK, YELLOW, "CO");
+
+	drawButton(491,120, 20, 20, 20, 20, BLACK, YELLOW, "CH4");
+
+	drawButton(243, 340, 20, 20, 20, 20, BLACK, YELLOW, "Smoke");
+
+	drawButton(513, 335, 20, 20, 20, 20, BLACK, YELLOW, "NOx & CO2");
+}
+
+void drawAxisVal(int maxPPM){
 	int i;
-	// top two square button
-	for (i=49;i<214;i++) {
-		Line(174,i,374,i,GREEN);
-		Line(424,i,624,i,GREEN);
+
+	int val = maxPPM;
+	int step = val / 10;
+
+	for(i = 73; i < 430; i = i+35){
+		char str[15];
+		sprintf(str, "%d",val);
+		writeWord(160, i, WHITE, BLACK, str);
+		val = val - step;
 	}
-	// bottom two square button
-	for (i=264;i<429;i++) {
-		Line(174,i,374,i,GREEN);
-		Line(424,i,624,i,GREEN);
-	}
-
-	// CH4
-	OutGraphicsCharFont2a(254, 125, BLUE, WHITE, 67, 0);
-	OutGraphicsCharFont2a(265, 125, BLUE, WHITE, 72, 0);
-	OutGraphicsCharFont2a(276, 125, BLUE, WHITE, 52, 0);
-
-	// Natural
-	OutGraphicsCharFont2a(491, 120, BLUE, WHITE, 78, 0);
-	OutGraphicsCharFont2a(502, 120, BLUE, WHITE, 97, 0);
-	OutGraphicsCharFont2a(513, 120, BLUE, WHITE, 116, 0);
-	OutGraphicsCharFont2a(524, 120, BLUE, WHITE, 117, 0);
-	OutGraphicsCharFont2a(535, 120, BLUE, WHITE, 114, 0);
-	OutGraphicsCharFont2a(546, 120, BLUE, WHITE, 97, 0);
-	OutGraphicsCharFont2a(557, 120, BLUE, WHITE, 108, 0);
-	// Gas
-	OutGraphicsCharFont2a(513, 135, BLUE, WHITE, 71, 0);
-	OutGraphicsCharFont2a(524, 135, BLUE, WHITE, 97, 0);
-	OutGraphicsCharFont2a(535, 135, BLUE, WHITE, 115, 0);
-
-	// Smoke
-	OutGraphicsCharFont2a(243, 340, BLUE, WHITE, 83, 0);
-	OutGraphicsCharFont2a(254, 340, BLUE, WHITE, 109, 0);
-	OutGraphicsCharFont2a(265, 340, BLUE, WHITE, 111, 0);
-	OutGraphicsCharFont2a(276, 340, BLUE, WHITE, 107, 0);
-	OutGraphicsCharFont2a(287, 340, BLUE, WHITE, 101, 0);
-
-	// Air
-	OutGraphicsCharFont2a(513, 335, BLUE, WHITE, 65, 0);
-	OutGraphicsCharFont2a(524, 335, BLUE, WHITE, 105, 0);
-	OutGraphicsCharFont2a(535, 335, BLUE, WHITE, 114, 0);
-	// Quality
-	OutGraphicsCharFont2a(491, 350, BLUE, WHITE, 81, 0);
-	OutGraphicsCharFont2a(502, 350, BLUE, WHITE, 117, 0);
-	OutGraphicsCharFont2a(513, 350, BLUE, WHITE, 97, 0);
-	OutGraphicsCharFont2a(524, 350, BLUE, WHITE, 108, 0);
-	OutGraphicsCharFont2a(535, 350, BLUE, WHITE, 105, 0);
-	OutGraphicsCharFont2a(546, 350, BLUE, WHITE, 116, 0);
-	OutGraphicsCharFont2a(557, 350, BLUE, WHITE, 121, 0);
 }
 
 void graph_showGasFrame(int gas) {
@@ -83,71 +80,44 @@ void graph_showGasFrame(int gas) {
 
 	// print gas name
 	switch(gas){
-		// CH4
-		case CH4:	OutGraphicsCharFont2a(100, 50, BLUE, WHITE, 67, 0);
-				OutGraphicsCharFont2a(111, 50, BLUE, WHITE, 72, 0);
-				OutGraphicsCharFont2a(122, 50, BLUE, WHITE, 52, 0);
+		case CO:
+				drawButton(300,50, 20, 20, 20, 20,WHITE,BLACK,"CO");
+				drawAxisVal(100);
 				break;
 		// Smoke
-		case SMOKE: OutGraphicsCharFont2a(100, 50, BLUE, WHITE, 83, 0);
-				OutGraphicsCharFont2a(111, 50, BLUE, WHITE, 109, 0);
-				OutGraphicsCharFont2a(122, 50, BLUE, WHITE, 111, 0);
-				OutGraphicsCharFont2a(133, 50, BLUE, WHITE, 107, 0);
-				OutGraphicsCharFont2a(144, 50, BLUE, WHITE, 101, 0);
+		case SMOKE:
+				drawButton(300,50, 20, 20, 20, 20,WHITE,BLACK,"SMOKE");
+				drawAxisVal(500);
 				break;
 		// Natural Gas
-		case NGAS: OutGraphicsCharFont2a(100, 50, BLUE, WHITE, 78, 0);
-				OutGraphicsCharFont2a(111, 50, BLUE, WHITE, 97, 0);
-				OutGraphicsCharFont2a(122, 50, BLUE, WHITE, 116, 0);
-				OutGraphicsCharFont2a(133, 50, BLUE, WHITE, 117, 0);
-				OutGraphicsCharFont2a(144, 50, BLUE, WHITE, 114, 0);
-				OutGraphicsCharFont2a(155, 50, BLUE, WHITE, 97, 0);
-				OutGraphicsCharFont2a(166, 50, BLUE, WHITE, 108, 0);
-				OutGraphicsCharFont2a(187, 50, BLUE, WHITE, 71, 0);
-				OutGraphicsCharFont2a(198, 50, BLUE, WHITE, 97, 0);
-				OutGraphicsCharFont2a(209, 50, BLUE, WHITE, 115, 0);								break;
+		case CH4:
+				drawButton(300,50, 20, 20, 20, 20,WHITE,BLACK,"CH4");
+				drawAxisVal(500);
 				break;
 		// Air Quality
-		case AIRQ: OutGraphicsCharFont2a(100, 50, BLUE, WHITE, 65, 0);
-				OutGraphicsCharFont2a(111, 50, BLUE, WHITE, 105, 0);
-				OutGraphicsCharFont2a(122, 50, BLUE, WHITE, 114, 0);
-				OutGraphicsCharFont2a(143, 50, BLUE, WHITE, 81, 0);
-				OutGraphicsCharFont2a(154, 50, BLUE, WHITE, 117, 0);
-				OutGraphicsCharFont2a(165, 50, BLUE, WHITE, 97, 0);
-				OutGraphicsCharFont2a(176, 50, BLUE, WHITE, 108, 0);
-				OutGraphicsCharFont2a(187, 50, BLUE, WHITE, 105, 0);
-				OutGraphicsCharFont2a(198, 50, BLUE, WHITE, 116, 0);
-				OutGraphicsCharFont2a(209, 50, BLUE, WHITE, 121, 0);								break;
+		case NOX:
+				drawButton(300,50, 20, 20, 20, 20,WHITE,BLACK,"NOx & CO2");
+				drawAxisVal(500);
 				break;
 		default: printf("Unexpected gas name ...");
 
 	}
 
-	// print coordinate
 	// print label
-	// 100%
-	OutGraphicsCharFont2a(47, 80, GREEN, WHITE, 49, 0);
-	OutGraphicsCharFont2a(58, 80, GREEN, WHITE, 48, 0);
-	OutGraphicsCharFont2a(69, 80, GREEN, WHITE, 48, 0);
-	OutGraphicsCharFont2a(80, 80, YELLOW, WHITE, 37, 0);
-	// 0%
-	OutGraphicsCharFont2a(69, 430, GREEN, WHITE, 48, 0);
-	OutGraphicsCharFont2a(80, 430, YELLOW, WHITE, 37, 0);
+	// PPM
+	writeWord(150, 50, WHITE, BLACK, "PPM");
+
+	int i;
+	//draw more horizontal lines from 0 - 500 and label them
+	for(i = 80; i < 430; i = i+35){
+		HLine(200, i, 300, RED);
+	}
 
 	// print axices
-	Line(100, 80, 100, 430, GREEN);		// y-axis
-	Line(100, 430, 600, 430, GREEN);	// x-axis
+	VLine(200, 80, 350, WHITE);		// y-axis
+	HLine(200, 430, 300, WHITE);	// x-axis
 }
 
-//int graph_barColourFilter(int val) {
-//	if (val > 600) {
-//		return RED;
-//	} else if (val > 300) {
-//		return YELLOW;
-//	} else {
-//		return GREEN;
-//	}
-//}
 
 // global variable to remember the last height value of the bar
 last_height = 0;		// initialize it to zero
@@ -157,21 +127,18 @@ void graph_updateGasValue(int val) {
 	// get the height of the bar
 	int height = 350 * val / 1024;
 
-
-
 	// change the bar image according to the difference between the current hight and the last height
 	int i;
 	if (height > last_height) {
 		for (i=429-last_height; i>429-height; i--) {
-			Line(300, i, 400, i, YELLOW);
+			HLine(300, i, 100, YELLOW);
 		}
 	} else if (height < last_height) {
 		for (i=429-last_height; i<429-height; i++) {
-			Line(300, i, 400, i, BLACK);
+			HLine(300, i, 100, BLACK);
 		}
 	}
 
 	// update last height
 	last_height = height;
-
 }
