@@ -1,4 +1,5 @@
 //project.h
+
 /*
 #define SENSOR_Control (*(volatile unsigned char *)(0x84000210))
 #define SENSOR_Status (*(volatile unsigned char *)(0x84000210))
@@ -23,6 +24,27 @@
 #define TOUCH_TxData (*(volatile unsigned char *)(0x84000232))
 #define TOUCH_RxData (*(volatile unsigned char *)(0x84000232))
 #define TOUCH_Baud (*(volatile unsigned char *)(0x84000234))
+#define SWITCHES (*(volatile unsigned char *)(0x00002000))
+#define LEDS (*(volatile unsigned char *)(0x00002010))
+#define HEX01 (*(volatile unsigned char *)(0x00002030))
+#define HEX23 (*(volatile unsigned char *)(0x00002040))
+#define HEX45 (*(volatile unsigned char *)(0x00002050))
+
+
+#define BT_Control (*(volatile unsigned char *)(0x84000220))
+#define BT_Status (*(volatile unsigned char *)(0x84000220))
+#define BT_TxData (*(volatile unsigned char *)(0x84000222))
+#define BT_RxData (*(volatile unsigned char *)(0x84000222))
+#define BT_Baud (*(volatile unsigned char *)(0x84000224))
+
+
+#define WIFI_Control (*(volatile unsigned char *)(0x84000200))
+#define WIFI_Status (*(volatile unsigned char *)(0x84000200))
+#define WIFI_TxData (*(volatile unsigned char *)(0x84000202))
+#define WIFI_RxData (*(volatile unsigned char *)(0x84000202))
+#define WIFI_Baud (*(volatile unsigned char *)(0x84000204))
+
+
 #define TRUE 1
 #define FALSE 0
 
@@ -72,13 +94,29 @@
 #define SMOKE 	2
 #define CH4		3
 #define NOX		4
+#define WARN	5
 int current_state;
 int last_height;
+
+int warning_stop;
+int wifi_message_sent;
+
+
+
+// warning state
+#define WARNING_NAGS 500
+#define WARNING_CH4 500
+#define WARNING_SMOKE 500
+#define WARNING_AIRQ 360
+
+
+
 
 
 /* a data type to hold a point/coord */
 typedef struct{
-int x, y; } Point;
+	int x, y;
+} Point;
 
 //initial.c
 /**************************************************************************
@@ -117,6 +155,21 @@ void Line(int x1, int y1, int x2, int y2, int Colour);
 
 //OutGraphicsCharFont2.c
 void OutGraphicsCharFont2a(int x, int y, int colour, int backgroundcolour, int c, int Erase);
+
+// warning.c
+void enter_warning_state(int gas);
+
+// wifi_command.c
+void wifi_sendCommand(char str[]);
+void Init_Wifi(void);
+
+// bluetooth.c
+int Init_Bluetooth();
+int putcharBT(char c);
+int getcharBT(void);
+void sendMessageBT(char * str);
+int BTTestForReceivedData(void);
+
 
 
 //arduino.c

@@ -1,9 +1,6 @@
 #include "project.h"
-#define MENU	0
-#define CH4 	1
-#define SMOKE 	2
-#define NGAS	3
-#define AIRQ	4
+#include <stdio.h>
+
 current_state = MENU;	// initialize it to menu
 
 
@@ -17,11 +14,16 @@ int mq135;
 
 void main()
 {
-   printf("Starting cpen391 project\n");
 
-   Init_Sensor();
-   Init_Touch();
-   graph_goto_menu();
+	//printf("Starting cpen391 project\n");
+
+
+	Init_Bluetooth();
+	Init_Sensor();
+	Init_Touch();
+
+	graph_goto_menu();
+
 
    while(TRUE){
 
@@ -55,15 +57,17 @@ void main()
 		   
 		   // jump back to menu if showing gas value
 		   else {
-			   current_state = MENU;
+			   wifi_message_sent = 0;
 			   graph_goto_menu();
 		   }
 		   
 	   }
 	   if(SensorReceivedData()){
 		   //if the data is from the Arduino, update gas value 
-			update(); 
+			update();
 //			printf("calling update\n");
+
 	   }
    }
+
 }

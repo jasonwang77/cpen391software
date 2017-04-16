@@ -13,10 +13,10 @@
 
 
 // clear everything
-void graph_clearAll(){
+void graph_paintAll(int colour){
 	int i;
 	for (i=0;i<479;i++) {
-		HLine(0,i,800,BLACK);
+		HLine(0,i,800,colour);
 	}
 }
 
@@ -49,15 +49,20 @@ void writeWord(int x, int y,int color, int backgroundcolour, char *word){
 
 // main menu
 void graph_goto_menu() {
-	graph_clearAll();
+	current_state = MENU;
+	graph_paintAll(BLACK);
 
-	drawButton(254,125, 20, 20, 20, 20, BLACK, YELLOW, "CO");
+	writeWord(345, 70, SKY_BLUE, SKY_BLUE, "Good Afternoon!");
 
-	drawButton(491,120, 20, 20, 20, 20, BLACK, YELLOW, "CH4");
+	drawButton(345,150, 20, 20, 20, 20, BLACK, GREEN, "Status: Normal");
 
-	drawButton(243, 340, 20, 20, 20, 20, BLACK, YELLOW, "Smoke");
+	drawButton(250,330, 20, 20, 20, 20, BLACK, YELLOW, "   CO    ");
 
-	drawButton(513, 335, 20, 20, 20, 20, BLACK, YELLOW, "NOx & CO2");
+	drawButton(500,330, 20, 20, 20, 20, BLACK,ORANGE,  "   CH4   ");
+
+	drawButton(250, 400, 20, 20, 20, 20, BLACK, ORANGE,"  Smoke  ");
+
+	drawButton(500, 400, 20, 20, 20, 20, BLACK, PINK,  "NOx & CO2");
 }
 
 void drawAxisVal(int maxPPM){
@@ -74,30 +79,41 @@ void drawAxisVal(int maxPPM){
 	}
 }
 
+void drawDanger(){
+	int i;
+	drawButton(520, 380 , 150, 30, 10, 10, BLACK, GREEN, "Normal ");
+	drawButton(520, 180 , 50, 30, 10, 10, BLACK, ORANGE, "Harmful");
+	drawButton(520, 80 , 30, 30, 10, 10, BLACK, RED,     "Danger ");
+}
+
 void graph_showGasFrame(int gas) {
 	// clear the screen
-	graph_clearAll();
+	graph_paintAll(BLACK);
 
 	// print gas name
 	switch(gas){
 		case CO:
 				drawButton(300,50, 20, 20, 20, 20,WHITE,BLACK,"CO");
 				drawAxisVal(100);
+				drawDanger();
 				break;
 		// Smoke
 		case SMOKE:
 				drawButton(300,50, 20, 20, 20, 20,WHITE,BLACK,"SMOKE");
 				drawAxisVal(500);
+				drawDanger();
 				break;
 		// Natural Gas
 		case CH4:
 				drawButton(300,50, 20, 20, 20, 20,WHITE,BLACK,"CH4");
 				drawAxisVal(500);
+				drawDanger();
 				break;
 		// Air Quality
 		case NOX:
 				drawButton(300,50, 20, 20, 20, 20,WHITE,BLACK,"NOx & CO2");
 				drawAxisVal(500);
+				drawDanger();
 				break;
 		default: printf("Unexpected gas name ...");
 
@@ -131,7 +147,7 @@ void graph_updateGasValue(int val) {
 	int i;
 	if (height > last_height) {
 		for (i=429-last_height; i>429-height; i--) {
-			HLine(300, i, 100, YELLOW);
+			HLine(300, i, 100, CYAN);
 		}
 	} else if (height < last_height) {
 		for (i=429-last_height; i<429-height; i++) {
@@ -142,3 +158,4 @@ void graph_updateGasValue(int val) {
 	// update last height
 	last_height = height;
 }
+
